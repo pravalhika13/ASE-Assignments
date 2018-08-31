@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"  >
+<head>
+
+    <meta charset="UTF-8">
+
+    <style>
+
+        .weatherModule {
+            background: #f2f2f;
+            height: 150px;
+            width: 250px;
+            border: 1px dashed #ccc;
+            padding: 1em;
+        }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js" type="application/javascript"></script>
+    <h3 align="center" style="font-size:40px;">WEATHER APPLICATION</h3>
+
+</head>
+
+<body style="background-color:powderblue;">
+
+<div class="container">
+    <div class="jumbotron">
+<div align="center">
+    <div class="form-group">
+    <div ng-app="weathercond"  ng-controller="weathercontroller" >
+    <label>Enter your city name </label>
+    <input type="text"  class="form-control" id="name" placeholder="Enter city name">
+    <br>
+    <br>
+    <label>Enter state code here </label>
+    <input type="text" class="form-control" id="name1" placeholder="Enter statecode">
+
+    <br>
+    <button id="button" ng-click="getWeather()" class="btn btn-primary" > Show Weather </button>
+    <br/>
+    <br/>
+<div style="margin:2px;border:2px solid purple;color:green>"
+            <div  ng-repeat = "obj in result| limitTo:5"  >
+        {{obj.condition}}
+                <img src={{obj.icon_url}}>
+        {{obj.temp.english}}
+        {{obj.FCTTIME.pretty}}
+
+    </div>
+    </div>
+        </div>
+</div>
+</>
+<script>
+    angular.module('weathercond',[])
+        .controller('weathercontroller', function($scope, $http) {
+            $scope.result = [];
+            $scope.getWeather = function() {
+                var city=document.getElementById("name").value;
+                var state=document.getElementById("name1").value;
+                $http.get('http://api.wunderground.com/api/4bbbc25f4f5946dd/hourly/q/'+state+'/'+city+'.json').success(function(data)
+                {
+                    console.log(data);
+                    $scope.result = data["hourly_forecast"];
+
+                })
+            }
+
+        });
+</script>
+</div>
+</html>
